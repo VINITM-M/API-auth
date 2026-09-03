@@ -1,12 +1,13 @@
+import os
+from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
-from typing import Optional 
+
+load_dotenv()
+
+API_key = os.getenv("API_KEY")
 
 class Settings(BaseSettings):
 
-    REDIS_HOST: str = "localhost"
-    REDIS_PORT: int = 6379
-    REDIS_DB: int = 0
-    REDIS_PASSWORD: Optional[str] = None
-
+    API_KEY: str = API_key
 
 settings = Settings()
