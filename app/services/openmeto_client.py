@@ -4,7 +4,7 @@ from typing import Optional
 import httpx
 from fastapi import HTTPException
 from core.config import API_key
-from models import CloudCover, Humidity, Precipitation, Pressure, Temperature, WeatherResponse, Wind, WindMax
+from app.utils.models import CloudCover, Humidity, Precipitation, Pressure, Temperature, WeatherResponse, Wind, WindMax
 
 
 class OpenMeteoClient:

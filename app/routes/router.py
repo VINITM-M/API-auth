@@ -1,6 +1,5 @@
 from fastapi import APIRouter, FastAPI
-
-from endpoints import weather
+from endpoints import weather, api_key
 api_router = APIRouter() 
 
 @api_router.get("/health", tags=["health"])
@@ -12,3 +11,9 @@ api_router.include_router(
     prefix="/weather",
     tags=["weather"] 
     ) 
+
+api_router.include_router(
+    api_key.router,
+    prefix="/create-api-key",
+    tags=["api-keys"] 
+)
