@@ -1,62 +1,62 @@
-from pydantic import BaseModel, Field, Optional, datetime, ConfigDict
+
+from sqlalchemy import (
+    create_engine,
+    MetaData,
+    Table,
+    Column,
+    Integer,
+    String,
+    DateTime,
+    Boolean
+)
 from datetime import datetime
-from typing import Any, Dict, Optional
+from db.db import get_connection
+
+engine = get_connection()
 
 
-class APIKeyRead(BaseModel):
+# metadata is function structure the information and properties about table Schema into the db. 
+# Stores table schema and database structure.
 
-    model_config = ConfigDict(from_attributes=True)
+metadata = MetaData()
 
-    id: int = Field(description="Unique identifier of the API key.")
+def table_creation():
 
-    user: Optional[Dict[str, Any]] = Field(
-        default=None, description="The user associated with this API key."
+    apikey = Table(
+        "apikey_creation",
+        metadata,
+
+        Column("id", Integer, primary_key=True),
+        Column("user_id", Integer, nullable=False),
+        Column("key", String, unique=True, nullable=False),
+        Column("created_at", DateTime, nullable=False),
+        Column("expires_at", DateTime, nullable=True),
+        Column("is_active", Boolean, default=True),
+        Column("requests_count", Integer, default=0),
+        Column("max_requests", Integer, nullable=True),
+        Column("reset_at", DateTime, nullable=True)
     )
 
-    key: str = Field(description="The API key string, generated on creation.")
-    
-    created_at: datetime = Field(
-        description="The date and time when the API key was created."
-    )
-    expires_at: Optional[datetime] = Field(
-        default=None, description="The date and time when the API key will expire."
-    )
-    is_active: bool = Field(
-        description="Indicates whether the API key is currently active and usable."
-    )
-    requests_count: int = Field(
-        description="Number of requests made with this API key."
-    )
-    max_requests: Optional[int] = Field(
-        default=None,
-        description="Maximum number of requests allowed (total or per reset period).",
-    )
-    reset_at: Optional[datetime] = Field(
-        default=None, description="Time when the request count resets, if applicable."
+    # Actually create the table in the database
+    metadata.create_all(engine)
+
+    return apikey
+
+
+
+def table_insert(user_id, key, created_at, expires_at, is_active, requests_count, max_requests, reset_at):
+
+    insert_query = apikey.insert().values(
+        user_id=user_id,
+        key=key,
+        created_at=created_at,
+        expires_at=expires_at,
+        is_active=is_active,
+        requests_count=requests_count,
+        max_requests=max_requests,
+        reset_at=reset_at
     )
 
-class APIKeyCreate(BaseModel): 
-
-    """The payload accepted when creating an API key.
-
-    The key itself, the request counter, the quota and the reset time are all
-    server generated, so only ownership, expiration and the active flag can be
-    supplied.
-
-    """
-
-    user_id: Optional[int] = Field(
-        default=None,
-        description="The ID of the user associated with this APIKey (Optional).",
-    ) 
-
-    expires_at: Optional[datetime] = Field(
-        default=None,
-        description="The date and time when the API key will expire. "
-        "Leave blank for no expiration.",
-    )
-
-    is_active: bool = Field(
-        default=True,
-        description="Indicates whether the API key is currently active and usable.",
-    )
+    with engine.connect() as connection:
+        connection.execute(insert_query)
+        connection.commit()

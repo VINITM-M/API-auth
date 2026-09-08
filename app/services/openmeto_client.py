@@ -4,8 +4,7 @@ from typing import Optional
 import httpx
 from fastapi import HTTPException
 from core.config import API_key
-from app.utils.models import CloudCover, Humidity, Precipitation, Pressure, Temperature, WeatherResponse, Wind, WindMax
-
+from utils import models
 
 class OpenMeteoClient:
 
@@ -111,23 +110,23 @@ class OpenMeteoClient:
         temp_max = daily["temperature_2m_max"][0]
         wind_speed = current["wind_speed_10m"]
 
-        response = WeatherResponse(
+        response = models.WeatherResponse(
 
             date=datetime.now().strftime("%Y-%m-%d"),
 
-            cloud_cover=CloudCover(
+            cloud_cover=models.CloudCover(
                 afternoon=current["cloud_cover"]
             ),
 
-            humidity=Humidity(
+            humidity=models.Humidity(
                 afternoon=current["relative_humidity_2m"]
             ),
             
-            precipitation=Precipitation(
+            precipitation=models.Precipitation(
                 total=current["precipitation"]
             ),
             
-            temperature=Temperature(
+            temperature=models.Temperature(
                 min=temp_min,
                 max=temp_max,
                 afternoon=temp,
@@ -135,11 +134,11 @@ class OpenMeteoClient:
                 evening=temp,
                 morning=temp,
             ),
-            pressure=Pressure(
+            pressure=models.Pressure(
                 afternoon=current["pressure_msl"]
             ),
-            wind=Wind(
-                max=WindMax(
+            wind=models.Wind(
+                max=models.WindMax(
                     speed=wind_speed,
                     direction=current["wind_direction_10m"]
                 )

@@ -1,17 +1,16 @@
-from typing import TYPE_CHECKING, Any, AsyncIterator, Callable
 
-from exceptions import ImproperlyConfigured
+from sqlalchemy import create_engine 
+from core import config 
 
-if TYPE_CHECKING:  # pragma: no cover
-    from fastapi import FastAPI
-    from sqlalchemy.ext.asyncio import AsyncSession
+#config details 
+user = config.user
+password = config.password 
+host = config.host 
+port = config.port 
+database = config.database 
 
-async def get_session() -> AsyncSession:
-
-    raise ImproperlyConfigured(
-        "No database session dependency is configured. Pass your session "
-        "dependency to fastapi_apikey_auth.setup(app, session_dependency=...) "
-        "or override fastapi_apikey_auth.db.get_session in "
-        "app.dependency_overrides."
+def get_connection():
+    engine = create_engine(
+        f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
     )
-    yield 
+    return engine 

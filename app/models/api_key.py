@@ -1,15 +1,27 @@
-from unittest.mock import Base
-from app.core import config
-from sqlalchemy.orm import Mapped, Integer, mapped_column 
+from core import config
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column 
 from sqlalchemy import Column, Integer, String, DateTime, func 
-import app.utils.timezone import now  
-from fastapi import Depends, Optional
+from utils import timezone as time
+from utils.timezone import now
+from typing import Optional
 from datetime import datetime, timedelta
 import secrets 
+from sqlalchemy import Integer, Boolean
+from db import get_connection
+
+
+
+class Base(DeclarativeBase):
+    pass
 
 #: Number of random bytes used to build a key. ``secrets.token_urlsafe(48)``
 #: produces a 64 character URL-safe string, which is what ``key`` stores.
+
 KEY_ENTROPY_BYTES = 48
+
+#config 
+# max_requests 
+# reset_requests_interval
 
 
 def default_max_requests() -> Optional[int]:
@@ -34,7 +46,6 @@ def generate_key():
 
 class APIKey(Base):
 
-    __tablename__ = "apikey_auth_api_key"
 
     id : Mapped[int] = mapped_column(
         Integer, 
@@ -42,6 +53,7 @@ class APIKey(Base):
         autoincrement=True
     )
 
+    #actual data from payload
     user_id : Mapped[int] = mapped_column(
         Integer,
         nullable=True,
@@ -54,7 +66,6 @@ class APIKey(Base):
         String(64),
         unique=True,
         index=True,
-        default=generate_key,
         doc="The API key used for authentication.",
     )
 
@@ -64,12 +75,14 @@ class APIKey(Base):
         doc="Timestamp when the API key was generated.",
     )
 
+    #actual data from payload
     expires_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=True,
         doc="Timestamp when the API key will expire.",
     )
 
+    #actual data from payload
     is_active: Mapped[bool] = mapped_column(
         Boolean,
         default=True,
@@ -93,6 +106,8 @@ class APIKey(Base):
         doc="Timestamp when the request count will reset, if rate limiting is time-based.",
     )
 
+
+
     @staticmethod 
     def calculate_next_reset() -> Optional[datetime]:
 
@@ -113,7 +128,7 @@ class APIKey(Base):
             return None 
 
         if interval == "minutely":
-            return now() + datetime.timedelta(minutes=1) 
+            return time.now() + datetime.timedelta(minutes=1) 
 
         elif interval == "hourly":
             return now() + datetime.timedelta(hours=1) 
@@ -124,4 +139,7 @@ class APIKey(Base):
         elif interval == "monthly":
             return now() + datetime.timedelta(days=30) 
 
-        return now() + datetime.timedelta(days=30)  # Default to monthly if unrecognized 
+        # Default to monthly if unrecognized 
+        return now() + datetime.timedelta(days=30)   
+
+    
