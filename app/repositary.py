@@ -1,16 +1,17 @@
 from models.api_key import APIKey, generate_key
-from schemas.api_key import table_insert
+from db.table_insertion import api_info_table_insert
 
 
 class APIKeyRepository:
 
-    async def create(self, **fields) -> APIKey:
-        
-        # model class object 
-        apikey = APIKey(**fields)
+    async def create(self, payload) -> APIKey:
 
-        #inserting into table
-        table_insert(
+        # here, we're definig the class objects for each feilds into the table insertion 
+        data = payload.model_dump() if hasattr(payload, "model_dump") else (payload.dict() if hasattr(payload, "dict") else dict(payload))
+        apikey = APIKey(**data)
+
+        # inserting into api key table  where we stores all the info about the api key  
+        api_info_table_insert(
             user_id=apikey.user_id,
             key=apikey.key,
             created_at=apikey.created_at,
@@ -18,6 +19,7 @@ class APIKeyRepository:
             is_active=apikey.is_active,
             requests_count=apikey.requests_count or 0,
             max_requests=apikey.max_requests,
-            reset_at=apikey.reset_at
+            reset_at=apikey.reset_at,
         )
-        return apikey
+        
+        return apikey 

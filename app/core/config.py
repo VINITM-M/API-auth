@@ -10,6 +10,8 @@ password = os.getenv("password")
 host = os.getenv("host")
 port = os.getenv("port")
 database = os.getenv("database")
+max_requests = os.getenv("APIKEY_AUTH_MAX_REQUESTS")
+reset_requests_interval = os.getenv("APIKEY_AUTH_RESET_REQUESTS_INTERVAL")
 
 class Settings(BaseSettings):
 

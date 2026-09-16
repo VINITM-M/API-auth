@@ -32,7 +32,7 @@ def default_max_requests() -> Optional[int]:
         when no quota is configured.
 
     """
-    return config.max_requests
+    return getattr(config, "max_requests", None)
 
 def generate_key():
     """Generate a new, cryptographically secure API key.
@@ -45,7 +45,7 @@ def generate_key():
 
 
 class APIKey(Base):
-
+    __tablename__ = "apikey_creation"
 
     id : Mapped[int] = mapped_column(
         Integer, 
@@ -66,6 +66,7 @@ class APIKey(Base):
         String(64),
         unique=True,
         index=True,
+        default=generate_key,
         doc="The API key used for authentication.",
     )
 
@@ -106,7 +107,13 @@ class APIKey(Base):
         doc="Timestamp when the request count will reset, if rate limiting is time-based.",
     )
 
-
+    def __init__(self, **kwargs):
+        kwargs.setdefault("key", generate_key())
+        kwargs.setdefault("created_at", now())
+        kwargs.setdefault("requests_count", 0)
+        kwargs.setdefault("max_requests", default_max_requests())
+        kwargs.setdefault("reset_at", self.calculate_next_reset())
+        super().__init__(**kwargs)
 
     @staticmethod 
     def calculate_next_reset() -> Optional[datetime]:
@@ -122,24 +129,24 @@ class APIKey(Base):
 
         """
 
-        interval = config.reset_requests_interval
+        interval = getattr(config, "reset_requests_interval", None)
 
         if not interval:
             return None 
 
         if interval == "minutely":
-            return time.now() + datetime.timedelta(minutes=1) 
+            return now() + timedelta(minutes=1) 
 
         elif interval == "hourly":
-            return now() + datetime.timedelta(hours=1) 
+            return now() + timedelta(hours=1) 
 
         elif interval == "daily": 
-            return now() + datetime.timedelta(days=1) 
+            return now() + timedelta(days=1) 
 
         elif interval == "monthly":
-            return now() + datetime.timedelta(days=30) 
+            return now() + timedelta(days=30) 
 
         # Default to monthly if unrecognized 
-        return now() + datetime.timedelta(days=30)   
+        return now() + timedelta(days=30)   
 
     
