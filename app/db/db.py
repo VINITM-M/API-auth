@@ -1,6 +1,7 @@
 
 from urllib.parse import quote_plus
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from core import config
 
 
@@ -21,3 +22,7 @@ def get_connection():
         f"mysql+pymysql://{user}:{encoded_password}@{host}:{port}/{database}"
     )
     return engine
+
+# ORM session factory — use this to add/query/delete ORM objects
+engine = get_connection()
+SessionLocal = sessionmaker(bind=engine)

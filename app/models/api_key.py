@@ -1,3 +1,20 @@
+
+""" 
+    Here, the file speaks about SQL Alchemy ORM , 
+
+    SQL Alchemy is toolkit of Python database. 
+    
+    ORM is the part of SQL Alchemy, it's higher level of sql alchmey , by default execution of this , it executes sql core 
+    SQLAlchemy Core is another part , where the users write low levle sql query insert, delete ,etc ..
+    
+    currently using the ORM layer, which internally uses SQLAlchemy Core to generate and execute SQL.  combines all these we have to call ORM Layer
+
+    Below Code speaks about SQLAlchemy ORM only. 
+    it's maps python objects into sql database objects or columns 
+
+ """
+
+
 from core import config
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column 
 from sqlalchemy import Column, Integer, String, DateTime, func 
@@ -7,9 +24,6 @@ from typing import Optional
 from datetime import datetime, timedelta
 import secrets 
 from sqlalchemy import Integer, Boolean
-from db import get_connection
-
-
 
 class Base(DeclarativeBase):
     pass
@@ -18,11 +32,6 @@ class Base(DeclarativeBase):
 #: produces a 64 character URL-safe string, which is what ``key`` stores.
 
 KEY_ENTROPY_BYTES = 48
-
-#config 
-# max_requests 
-# reset_requests_interval
-
 
 def default_max_requests() -> Optional[int]:
     """Return the configured request quota applied to freshly created keys.
@@ -54,11 +63,11 @@ class APIKey(Base):
     )
 
     #actual data from payload
-    user_id : Mapped[int] = mapped_column(
-        Integer,
-        nullable=True,
+    user_email : Mapped[str] = mapped_column(
+        String,
+        nullable=False,
         index=True,
-        doc="The user associated with this API key.",
+        doc="The email of the user associated with this API key.",
     )
 
     #generating key
@@ -77,10 +86,11 @@ class APIKey(Base):
     )
 
     #actual data from payload
-    expires_at: Mapped[datetime] = mapped_column(
+    expires_at: Mapped[Optional[datetime]] = mapped_column(
         DateTime(timezone=True),
         nullable=True,
-        doc="Timestamp when the API key will expire.",
+        default=None,
+        doc="The date and time when the API key will expire.",
     )
 
     #actual data from payload
@@ -108,6 +118,11 @@ class APIKey(Base):
     )
 
     def __init__(self, **kwargs):
+        # Compute expires_at from no_of_days_expire if provided
+        no_of_days_expire = kwargs.pop("no_of_days_expire", None)
+        if no_of_days_expire and "expires_at" not in kwargs:
+            kwargs["expires_at"] = now() + timedelta(days=no_of_days_expire)
+
         kwargs.setdefault("key", generate_key())
         kwargs.setdefault("created_at", now())
         kwargs.setdefault("requests_count", 0)
