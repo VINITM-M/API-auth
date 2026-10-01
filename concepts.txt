@@ -1,0 +1,102 @@
+Concepts are Implemented 
+
+==> 1. Authentication & Authorization:
+  
+JWT Authentication
+Authorization (RBAC)
+Refresh Token Management
+Password Hashing
+Email Verification
+OTP Verification
+Role-Based Resource Access
+Rate Limiting 
+
+
+2. Core API Development:
+
+CRUD Operations
+API Versioning
+Data Validation
+Pydantic Schemas / DTOs
+Middleware
+Dependency Injection
+Repository Pattern
+API Documentation (Swagger/OpenAPI)
+
+
+3. Data Retrieval & Querying:
+
+Pagination
+Cursor-Based Pagination
+Filtering
+Search
+Sorting
+Bulk Operations (Batch Insert/Update)
+
+==> 4. Database & Data Management:
+
+Soft Delete
+Database Transactions
+Optimistic Locking
+Database Indexing
+Query Optimization
+Database Migrations
+Connection Pooling
+Database-Level Constraints
+Read Replicas
+Database Sharding
+
+==> 5. Caching & Performance:
+  
+Redis Caching
+Distributed Caching
+ETag & Caching Headers
+
+6. Background Processing & Messaging:
+
+Background Jobs / Task Queue
+Message Queues (RabbitMQ/Kafka)
+Retry Mechanisms
+Event-Driven Architecture
+
+7. Error Handling & Reliability:
+
+Global Exception Handling
+Idempotency
+Circuit Breaker Pattern
+Health Check Endpoints
+
+==> 8. Logging, Monitoring & Observability:
+  
+Structured Logging
+Audit Logging
+Request Correlation ID
+Monitoring & Metrics
+Distributed Tracing
+
+9. File Handling:
+
+File Upload Management
+
+10. Real-Time Communication:
+
+WebSockets
+
+11. Testing:
+  
+Unit Testing
+Integration Testing
+
+12. Deployment & DevOps:
+  
+Dockerization
+Environment Configuration
+Secure Secrets Management
+
+13. Enterprise & Scalability Patterns:
+
+CQRS (Command Query Responsibility Segregation)
+Event Sourcing
+SAGA Pattern
+Microservice Communication
+Multi-Tenancy
