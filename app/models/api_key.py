@@ -75,7 +75,7 @@ class APIKey(Base):
         String(64),
         unique=True,
         index=True,
-        default=generate_key,
+        insert_default=generate_key, # Notice: no parentheses () after generate_key
         doc="The API key used for authentication.",
     )
 

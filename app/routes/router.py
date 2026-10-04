@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from endpoints import weather, api_key
+from endpoints import  api_key
 
 api_router = APIRouter() 
 
@@ -10,12 +10,6 @@ async def health_check():
 
 #includes all the routers
  
-api_router.include_router(
-    weather.router,
-    prefix="/weather",
-    tags=["weather"] 
-    ) 
-
 api_router.include_router(
     api_key.router,
     prefix="/create-api-keys",

@@ -4,7 +4,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from core import config
 
-
 #config details from cofig.py file to local var to easy use it here
 
 user = config.user 
@@ -19,7 +18,7 @@ reset_requests_interval = config.reset_requests_interval
 def get_connection():
     encoded_password = quote_plus(password)
     engine = create_engine(
-        f"mysql+pymysql://{user}:{encoded_password}@{host}:{port}/{database}"
+        f"postgresql+psycopg2://{user}:{encoded_password}@{host}:{port}/{database}"
     )
     return engine
 
