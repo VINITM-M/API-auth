@@ -6,7 +6,7 @@ JWT Authentication
 Authorization (RBAC)
 Refresh Token Management
 Password Hashing
-Email Verification
+Email Verificationn
 OTP Verification
 Role-Based Resource Access
 Rate Limiting 
