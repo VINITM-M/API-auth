@@ -1,0 +1,352 @@
+Level 1: Password Authentication Concepts
+
+Username + Password
+Password Hashing
+Salting
+Account Verification
+Password Reset
+Tradeoff
+
+Plain Password
+
+Easy
+Insecure
+
+vs
+
+Hashed Password
+
+Secure
+Slight CPU cost
+Level 2: Session Authentication
+Concepts
+Sessions
+Cookies
+Session Storage
+Session Expiration
+Tradeoff
+
+Session-Based Auth
+
+Pros:
+
+Easy logout
+Easy revoke
+More secure
+
+Cons:
+
+Server stores state
+Scaling difficult
+
+vs
+
+JWT
+
+Pros:
+
+Stateless
+Easy scaling
+
+Cons:
+
+Hard revoke
+Token leakage impact higher
+
+This is one of the most common interview questions.
+
+Level 3: Cookies vs Tokens
+Concepts
+Cookies
+Local Storage
+Session Storage
+JWT
+Tradeoff
+
+Cookies:
+
+HttpOnly
+Better browser security
+
+JWT in LocalStorage:
+
+Easy SPA integration
+XSS risk
+Level 4: JWT Ecosystem
+Concepts
+Access Token
+Refresh Token
+Bearer Token
+Token Rotation
+Token Revocation
+Tradeoff
+
+Only Access Token
+
+Pros:
+
+Simple
+
+Cons:
+
+Frequent login
+
+vs
+
+Access + Refresh
+
+Pros:
+
+Better UX
+
+Cons:
+
+More complexity
+Level 5: API Authentication
+Concepts
+API Key
+Scoped API Key
+HMAC
+Signed Requests
+Tradeoff
+
+API Key:
+
+Simple
+Weak identity
+
+JWT:
+
+User identity
+More overhead
+
+HMAC:
+
+High security
+Complex implementation
+Level 6: Authorization
+Concepts
+Roles
+Permissions
+Resource Access
+Tradeoff
+
+RBAC:
+
+Plain Text
+Admin
+Manager
+User
+Show more lines
+
+Easy.
+
+But if rules increase:
+
+Plain Text
+Can access document only if
+owner == current user
+Show more lines
+
+RBAC struggles.
+
+Level 7: Advanced Authorization
+Concepts
+RBAC
+ABAC
+ReBAC
+Tradeoff
+RBAC
+
+Role-based.
+
+Simple.
+
+Example:
+
+Plain Text
+Admin
+Editor
+Viewer
+Show more lines
+ABAC
+
+Attribute-based.
+
+Example:
+
+Plain Text
+Department = HR
+Location = India
+Show more lines
+
+Flexible.
+
+Complex.
+
+ReBAC
+
+Relationship-based.
+
+Example:
+
+Plain Text
+Manager of employee
+Friend of user
+Owner of resource
+Show more lines
+
+Used by:
+
+Google Zanzibar
+GitHub
+Google Drive
+Level 8: OAuth2
+Concepts
+OAuth2
+Authorization Code Flow
+PKCE
+Client Credentials
+Tradeoff
+
+Build login yourself:
+
+Pros:
+
+Full control
+
+Cons:
+
+Security burden
+
+OAuth:
+
+Pros:
+
+Google handles identity
+
+Cons:
+
+More protocol complexity
+Level 9: Identity Layer
+Concepts
+OIDC
+ID Token
+Claims
+Scopes
+Interview Question
+
+OAuth vs OIDC
+
+OAuth:
+
+Authorization
+
+OIDC:
+
+Authentication + Identity
+
+Very common senior question.
+
+Level 10: Enterprise Authentication
+Concepts
+SSO
+SAML
+LDAP
+Kerberos
+Tradeoff
+
+SAML:
+
+Enterprise
+XML
+Older
+
+OIDC:
+
+Modern
+JSON
+Mobile friendly
+Level 11: Modern Authentication
+Concepts
+MFA
+Passkeys
+WebAuthn
+FIDO2
+Tradeoff
+
+Password:
+
+Pros:
+
+Familiar
+
+Cons:
+
+Phishing
+
+Passkeys:
+
+Pros:
+
+Strong security
+
+Cons:
+
+Device dependency
+Level 12: Scale (1M+ Users)
+Concepts
+Redis
+Distributed Sessions
+Stateless JWT
+Token Blacklisting
+Load Balancer
+Tradeoff
+
+Store sessions in database:
+
+Pros:
+
+Simple
+
+Cons:
+
+Slow at scale
+
+Redis:
+
+Pros:
+
+Fast
+
+Cons:
+
+Extra infrastructure
+Level 13: FAANG Authorization
+Concepts
+OPA
+Cedar
+Zanzibar
+Tradeoff
+
+RBAC:
+
+Plain Text
+User
+Admin
+Show more lines
+
+Simple.
+
+Zanzibar:
+
+Plain Text
+User is owner
+User is manager
+User belongs to group
+User inherited access
+Show more lines
+
+Massive flexibility.
+
+Much higher complexity.
