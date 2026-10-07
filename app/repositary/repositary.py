@@ -1,7 +1,7 @@
 from sqlalchemy import select
-from models.api_key import APIKey
+from schemas.api_key import APIKey
 from db import SessionLocal
-from models import api_key 
+from schemas import api_key 
 
 class APIKeyRepository:
 
@@ -20,16 +20,9 @@ class APIKeyRepository:
         
         return apikey 
 
-    async def read(self, payload):
+    async def retrive(self, payload ):
+        
+        stmt = select(ApiKeyCreation.key).where(ApiKeyCreation.user_email == payload.email, 
+                                                ApiKeyCreation.created_at >= datetime.utcnow() - timedelta(days=no_of_days) ) 
 
-        with SessionLocal() as session:
-            
-            stmt = select(api_key).where(
-                api_key.user_email == payload.email
-            )
-
-            result = session.execute(stmt)
-
-            apikey = result.scalar_one_or_none()
-
-            return apikey
+        return stmt 

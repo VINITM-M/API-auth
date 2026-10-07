@@ -12,3 +12,4 @@ class APIKeyCreate(BaseModel):
 class APIKeyRead(BaseModel):
 
     email: EmailStr 
+    number_of_days: int  
