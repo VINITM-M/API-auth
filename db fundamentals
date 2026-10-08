@@ -1,0 +1,80 @@
+DATABASE FUNDAMENTALS
+│
+├── Database
+├── Relational database
+├── Table
+├── Row
+├── Column
+│
+├── Primary Key
+├── Foreign Key
+├── Constraints
+│
+├── SQL
+│   ├── SELECT
+│   ├── INSERT
+│   ├── UPDATE
+│   └── DELETE
+│
+├── WHERE
+├── ORDER BY
+├── GROUP BY
+├── JOIN
+│
+├── Index
+│
+├── Transaction
+├── COMMIT
+└── ROLLBACK
+
+  
+
+
+  01. Database architecture
+02. Relational model
+03. Data modeling
+04. Keys & constraints
+05. Normalization
+06. SQL
+07. Joins
+08. Aggregation
+09. Subqueries / CTEs
+10. Window functions
+
+11. Query optimizer
+12. Execution plans
+13. Indexes
+14. Transactions
+15. ACID
+16. Isolation levels
+17. Locking
+18. MVCC
+
+19. Storage engine
+20. Pages
+21. Buffer cache
+22. WAL
+23. Crash recovery
+
+24. Connection management
+25. Connection pooling
+26. Replication
+27. Partitioning
+28. Sharding
+29. Scaling
+
+30. Migrations
+31. Database security
+32. Performance tuning
+33. Deadlocks
+34. Failure handling
+
+                    ↓
+
+             SQLAlchemy Core
+                    ↓
+             SQLAlchemy ORM
+                    ↓
+                Alembic
+                    ↓
+             Production Backend
