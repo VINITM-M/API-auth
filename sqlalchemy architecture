@@ -1,0 +1,241 @@
+┌──────────────────────────────────────────────┐
+│              YOUR APPLICATION               │
+│                                              │
+│       FastAPI / Flask / Django / etc.       │
+└──────────────────────┬───────────────────────┘
+                       ↓
+┌──────────────────────────────────────────────┐
+│                 ORM LAYER                    │
+│                                              │
+│  Models                                      │
+│  Mapper                                      │
+│  Session                                     │
+│  Identity Map                                │
+│  Unit of Work                                │
+│  Relationships                               │
+│  Object lifecycle                            │
+└──────────────────────┬───────────────────────┘
+                       ↓
+┌──────────────────────────────────────────────┐
+│              SQLAlchemy CORE                 │
+│                                              │
+│  SQL Expression Language                     │
+│  Table / Column / Metadata                   │
+│  SELECT / INSERT / UPDATE / DELETE          │
+│  JOIN / CTE / Functions / etc.              │
+│  Transactions                                │
+└──────────────────────┬───────────────────────┘
+                       ↓
+┌──────────────────────────────────────────────┐
+│                  ENGINE                      │
+│                                              │
+│  Engine                                      │
+│  Connection                                  │
+│  Connection Pool                             │
+└──────────────────────┬───────────────────────┘
+                       ↓
+┌──────────────────────────────────────────────┐
+│                 DIALECT                      │
+│                                              │
+│  PostgreSQL / MySQL / SQLite / etc.          │
+│  Database-specific SQL behavior              │
+└──────────────────────┬───────────────────────┘
+                       ↓
+┌──────────────────────────────────────────────┐
+│                   DBAPI                      │
+│                                              │
+│  Python database driver                      │
+│  Connection                                  │
+│  Cursor                                      │
+│  Execute / Fetch                             │
+│  Commit / Rollback                            │
+└──────────────────────┬───────────────────────┘
+                       ↓
+┌──────────────────────────────────────────────┐
+│                 DATABASE                     │
+│                                              │
+│             PostgreSQL / MySQL               │
+└──────────────────────────────────────────────┘
+
+SQLAlchemy
+│
+├── 1. ORM
+│   │
+│   ├── Declarative System
+│   │   ├── DeclarativeBase
+│   │   ├── Declarative mapping
+│   │   ├── Mapped
+│   │   ├── mapped_column()
+│   │   └── relationship()
+│   │
+│   ├── Mapper
+│   │   ├── Python Class
+│   │   ├── Database Table
+│   │   ├── Attribute ↔ Column mapping
+│   │   └── Relationship mapping
+│   │
+│   ├── ORM Objects
+│   │   ├── Transient
+│   │   ├── Pending
+│   │   ├── Persistent
+│   │   ├── Detached
+│   │   └── Expired
+│   │
+│   ├── Session
+│   │   ├── Object management
+│   │   ├── Identity Map
+│   │   ├── Unit of Work
+│   │   ├── Flush
+│   │   ├── Commit
+│   │   ├── Rollback
+│   │   ├── Refresh
+│   │   └── Expire
+│   │
+│   ├── Relationships
+│   │   ├── One-to-One
+│   │   ├── One-to-Many
+│   │   ├── Many-to-One
+│   │   ├── Many-to-Many
+│   │   ├── Foreign Keys
+│   │   └── relationship()
+│   │
+│   ├── Loading
+│   │   ├── Lazy Loading
+│   │   ├── Joined Loading
+│   │   ├── Select-in Loading
+│   │   ├── Explicit Loading
+│   │   └── Raiseload
+│   │
+│   └── ORM Querying
+│       ├── select()
+│       ├── Session.execute()
+│       ├── scalars()
+│       ├── filters
+│       ├── joins
+│       └── results
+│
+│
+├── 2. SQLAlchemy Core
+│   │
+│   ├── SQL Expression Language
+│   │   ├── SELECT
+│   │   ├── INSERT
+│   │   ├── UPDATE
+│   │   ├── DELETE
+│   │   ├── WHERE
+│   │   ├── JOIN
+│   │   ├── GROUP BY
+│   │   ├── ORDER BY
+│   │   ├── HAVING
+│   │   ├── Subqueries
+│   │   ├── CTE
+│   │   ├── CASE
+│   │   ├── Functions
+│   │   └── Window Functions
+│   │
+│   ├── SQL Schema Objects
+│   │   ├── MetaData
+│   │   ├── Table
+│   │   ├── Column
+│   │   ├── PrimaryKey
+│   │   ├── ForeignKey
+│   │   ├── Index
+│   │   ├── UniqueConstraint
+│   │   ├── CheckConstraint
+│   │   └── Default
+│   │
+│   ├── SQL Types
+│   │   ├── Integer
+│   │   ├── String
+│   │   ├── Boolean
+│   │   ├── Date
+│   │   ├── DateTime
+│   │   ├── JSON
+│   │   ├── Enum
+│   │   └── Custom Types
+│   │
+│   └── Core Execution
+│       ├── Connection
+│       ├── Result
+│       ├── Row
+│       ├── Transaction
+│       └── Execution Options
+│
+│
+├── 3. Engine
+│   │
+│   ├── Engine
+│   │
+│   ├── Connection Management
+│   │   ├── Connection
+│   │   ├── Connection lifecycle
+│   │   └── Connection execution
+│   │
+│   ├── Connection Pool
+│   │   ├── Pool
+│   │   ├── Checkout
+│   │   ├── Check-in
+│   │   ├── Pool Size
+│   │   ├── Max Overflow
+│   │   ├── Timeout
+│   │   └── Recycling
+│   │
+│   └── Engine Configuration
+│       ├── Database URL
+│       ├── Echo / logging
+│       ├── Pool configuration
+│       └── Execution configuration
+│
+│
+├── 4. Dialect
+│   │
+│   ├── PostgreSQL Dialect
+│   ├── MySQL Dialect
+│   ├── SQLite Dialect
+│   ├── Oracle Dialect
+│   ├── SQL Server Dialect
+│   │
+│   ├── SQL Generation
+│   ├── Data Type Handling
+│   ├── Parameter Style
+│   ├── Database Capabilities
+│   └── Driver Integration
+│
+│
+├── 5. SQL Compiler
+│   │
+│   ├── SQLAlchemy Expression
+│   │        ↓
+│   ├── Compiler
+│   │        ↓
+│   ├── Dialect-specific SQL
+│   │        ↓
+│   └── SQL + Bound Parameters
+│
+│
+├── 6. DBAPI
+│   │
+│   ├── Python Database Interface
+│   │
+│   ├── Driver
+│   │   ├── psycopg
+│   │   ├── mysqlclient
+│   │   ├── sqlite3
+│   │   └── other drivers
+│   │
+│   ├── DBAPI Connection
+│   ├── DBAPI Cursor
+│   ├── Execute
+│   ├── Fetch
+│   ├── Commit
+│   ├── Rollback
+│   └── DBAPI Exceptions
+│
+│
+└── 7. Database
+    │
+    ├── PostgreSQL
+    ├── MySQL
+    ├── SQLite
+    ├── Oracle
+    └── SQL Server
