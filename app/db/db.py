@@ -22,6 +22,8 @@ def get_connection():
     )
     return engine
 
-# ORM session factory — use this to add/query/delete ORM objects
+
 engine = get_connection()
-SessionLocal = sessionmaker(bind=engine)
+
+Session = sessionmaker(bind=engine)   
+session = Session()

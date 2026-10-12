@@ -1,35 +1,38 @@
-from sqlalchemy import select
+from datetime import timedelta
+
+from sqlalchemy import select, func
 from models.api_key import APIKey
 from db import SessionLocal
 from models import api_key 
+from datetime import timedelta
 
 class APIKeyRepository:
 
     async def create(self, payload) -> APIKey:
         
-        apikey = APIKey(
-            user_email=payload.email,
-            no_of_days_expire=payload.no_of_days_expire 
+        users = Users(
+
+            user_email=payload.email, 
+            user_password=payload.password_hash 
         )
 
-        # Use ORM session to insert the apikey into the database
-        with SessionLocal() as session:
-            session.add(apikey)
-            session.commit()
-            session.refresh(apikey)  # populate server-generated fields like id
-        
-        return apikey 
+        apikey = APIKey(
+            user_api_key_name=payload.api_key_name,  
+            user_no_of_days_expire=payload.no_of_days_expire, 
+            user_api_key_password=payload.api_key_password 
+        )
 
     async def read(self, payload):
-
         with SessionLocal() as session:
+            # Build the base query
             
-            stmt = select(api_key).where(
-                api_key.user_email == payload.email
+            stmt = (
+                select(api_key)
+                .where(api_key.user_email == payload.email)
+                .where(api_key.created_at >= func.now() - timedelta(days=payload.days))
             )
 
             result = session.execute(stmt)
-
             apikey = result.scalar_one_or_none()
 
             return apikey

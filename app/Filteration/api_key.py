@@ -11,4 +11,10 @@ class APIKeyCreate(BaseModel):
 
 class APIKeyRead(BaseModel):
 
-    email: EmailStr 
+    email: EmailStr
+    api_key_name: str 
+    no_of_requests: Optional[int] = 10 
+    days: int = Field(gt=0, le=365)
+    billing_cycle: Optional[str] = "monthly" 
+    api_key_password: Optional[str] = None 
+    
