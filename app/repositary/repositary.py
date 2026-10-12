@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from datetime import timedelta
 
 from sqlalchemy import select, func
@@ -5,6 +6,12 @@ from models.api_key import APIKey
 from db import SessionLocal
 from models import api_key 
 from datetime import timedelta
+=======
+from sqlalchemy import select
+from schemas.api_key import APIKey
+from db import SessionLocal
+from schemas import api_key 
+>>>>>>> d0032c58f6a9d34014ee1245014a2281c9b00a85
 
 class APIKeyRepository:
 
@@ -22,6 +29,7 @@ class APIKeyRepository:
             user_api_key_password=payload.api_key_password 
         )
 
+<<<<<<< HEAD
     async def read(self, payload):
         with SessionLocal() as session:
             # Build the base query
@@ -36,3 +44,11 @@ class APIKeyRepository:
             apikey = result.scalar_one_or_none()
 
             return apikey
+=======
+    async def retrive(self, payload ):
+        
+        stmt = select(ApiKeyCreation.key).where(ApiKeyCreation.user_email == payload.email, 
+                                                ApiKeyCreation.created_at >= datetime.utcnow() - timedelta(days=no_of_days) ) 
+
+        return stmt 
+>>>>>>> d0032c58f6a9d34014ee1245014a2281c9b00a85

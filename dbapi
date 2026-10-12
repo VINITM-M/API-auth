@@ -1,0 +1,70 @@
+01. What is DBAPI?
+        ↓
+02. Database driver
+        ↓
+03. Connection
+        ↓
+04. Cursor
+        ↓
+05. Execute SQL
+        ↓
+06. Parameters
+        ↓
+07. Fetch results
+        ↓
+08. Transactions
+        ↓
+09. Commit / Rollback
+        ↓
+10. Exceptions
+        ↓
+11. Connection closing
+        ↓
+12. DBAPI → SQLAlchemy relationship
+
+  . DBAPI
+A Python standard interface that database drivers follow.
+  
+2. Database driver
+it's Python package that talks to a specific database.
+
+  PostgreSQL → psycopg
+MySQL      → mysqlclient / mysql-connector
+SQLite     → sqlite3 
+
+  db driver: database package that;s known as db driver , here , mysqlclient, psycoopg 
+
+    3. Connection
+Represents a communication channel between Python and the database.
+4. Cursor
+An object used to execute SQL and work with returned rows.
+5. Execute
+Send SQL to the database.
+6. Parameters
+Safely pass values into SQL instead of constructing SQL strings manually.
+7. Fetch
+Retrieve results returned by the database.
+8. Transactions
+Group multiple database operations into one logical unit.
+9. Commit / Rollback
+commit  → permanently save transaction
+rollback → undo transaction
+
+10. Exceptions
+Handle database errors such as constraint violations, connection failures, invalid SQL, etc.
+11. Closing
+Properly release cursor and connection resources.
+
+
+  then oit comes ot sqllache,y layer top of that , , 
+    Your Application
+       ↓
+ SQLAlchemy ORM
+       ↓
+SQLAlchemy Core
+       ↓
+     DBAPI
+       ↓
+    Driver
+       ↓
+   Database
