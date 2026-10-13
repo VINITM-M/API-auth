@@ -21,25 +21,17 @@ TABLE MAP  ("1 ──< N" means "one has many")
                        │
                        ^
                        N
-                    payment
+                    payment   
 """
-
-# users                api_keys              billing
-# ─────────            ─────────             ─────────
-# id (PK)              id (PK)               id (PK)
-# email                user_id (FK)          user_id (FK)
-# password_hash        api_key_hash          api_key_id (FK)
-# created_at           api_key_name          plan
-# updated_at           created_at            billing_cycle
-#                      last_used_at          billing_date
-#                      is_active             payment_status
-#                      expires_at            payment_date
-#                      rate_limit            amount   
 
 
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey 
-from sqlalchemy.orm import declarative_base
-from db import engine 
+from sqlalchemy.orm import declarative_base, relationship
+
+from database.db import engine
+
+import uuid
+from datetime import datetime
 
 
 Base = declarative_base()
@@ -47,11 +39,16 @@ Base = declarative_base()
 class USERS(Base):
     __tablename__ = "users"
 
+    #primary Key 
     id = Column(Integer, primary_key=True, index=True)
+
     email = Column(String, unique=True, index=True, nullable=False ) 
     password_hash = Column(String, nullable=False) 
     created_at = Column(DateTime, default=datetime.utcnow) 
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow) 
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    #define relationship 
+    api_key_id = relationship("APIKey", back_populates="user")
 
 
 class APIKey(Base): 
@@ -59,10 +56,18 @@ class APIKey(Base):
     __tablename__ = "api_keys"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, nullable=False) 
-    api_key_name = Column(String, nullable=False) 
-    api_key_hash = Column(String, unique=True, index=True, nullable=False) 
+    api_key_name = Column(String)
+    api_key_hash = Column(String, default=lambda: str(uuid.uuid4()), unique=True, index=True, nullable=False) 
     created_at = Column(DateTime, default=datetime.utcnow) 
     last_used_at = Column(DateTime, default=datetime.utcnow) 
     is_active = Column(Boolean, default=True) 
     expires_at = Column(DateTime, nullable=False) 
+
+    #Foreign Key Establishment
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False) 
+
+    #define relationship 
+    user = relationship("USERS", back_populates = 'api_key_id')
+
+# Create all tables
+Base.metadata.create_all(engine)

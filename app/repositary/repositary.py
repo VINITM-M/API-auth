@@ -1,27 +1,22 @@
-<<<<<<< HEAD
-from datetime import timedelta
-
-from sqlalchemy import select, func
-from models.api_key import APIKey
-from db import SessionLocal
-from models import api_key 
-from datetime import timedelta
-=======
 from sqlalchemy import select
-from schemas.api_key import APIKey
-from db import SessionLocal
-from schemas import api_key 
->>>>>>> d0032c58f6a9d34014ee1245014a2281c9b00a85
+from Schemas.api_key import USERS, APIKey
+from database import session
+
 
 class APIKeyRepository:
 
     async def create(self, payload) -> APIKey:
         
-        users = Users(
+        users = USERS(
 
             user_email=payload.email, 
             user_password=payload.password_hash 
         )
+
+        #creating session for users 
+        session.add(users)
+        session.commit()
+        session.refresh(users)
 
         apikey = APIKey(
             user_api_key_name=payload.api_key_name,  
@@ -29,26 +24,15 @@ class APIKeyRepository:
             user_api_key_password=payload.api_key_password 
         )
 
-<<<<<<< HEAD
-    async def read(self, payload):
-        with SessionLocal() as session:
-            # Build the base query
-            
-            stmt = (
-                select(api_key)
-                .where(api_key.user_email == payload.email)
-                .where(api_key.created_at >= func.now() - timedelta(days=payload.days))
-            )
+        #creating session for APIKey 
+        session.add(apikey) 
+        session.commit() 
+        session.refresh(apikey) 
 
-            result = session.execute(stmt)
-            apikey = result.scalar_one_or_none()
 
-            return apikey
-=======
-    async def retrive(self, payload ):
+    # async def retrive(self, payload ):
         
-        stmt = select(ApiKeyCreation.key).where(ApiKeyCreation.user_email == payload.email, 
-                                                ApiKeyCreation.created_at >= datetime.utcnow() - timedelta(days=no_of_days) ) 
+    #     stmt = select(ApiKeyCreation.key).where(ApiKeyCreation.user_email == payload.email, 
+    #                                             ApiKeyCreation.created_at >= datetime.utcnow() - timedelta(days=no_of_days) ) 
 
-        return stmt 
->>>>>>> d0032c58f6a9d34014ee1245014a2281c9b00a85
+    #     return stmt 

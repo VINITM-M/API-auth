@@ -25,5 +25,10 @@ def get_connection():
 
 engine = get_connection()
 
-Session = sessionmaker(bind=engine)   
-session = Session()
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine
+)
+
+session = SessionLocal()

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from routes import router
-from db import init_db
+from database import init_db
+from routes.router import api_router
 
 init_db()
 
@@ -9,4 +9,4 @@ app = FastAPI(
     description="Weather app using FastAPI",
 )
 
-app.include_router(router.api_router, prefix="/api")
+app.include_router(api_router, prefix="/api")
