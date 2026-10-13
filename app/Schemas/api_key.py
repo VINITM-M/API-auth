@@ -8,7 +8,7 @@ execution of this goes through SQL Core.
 SQLAlchemy Core is another part, where the users write low level SQL queries
 (insert, delete, etc.).
 
-Currently using the ORM layer 2.0, which internally uses SQLAlchemy Core to generate
+Curry using the ORM layer 2.0, which internally uses SQLAlchemy Core to generate
 and execute SQL. Combining all these, we call it the ORM layer.
 
 Below code speaks about SQLAlchemy ORM only.
@@ -43,7 +43,6 @@ class USERS(Base):
     id = Column(Integer, primary_key=True, index=True)
 
     email = Column(String, unique=True, index=True, nullable=False ) 
-    password_hash = Column(String, nullable=False) 
     created_at = Column(DateTime, default=datetime.utcnow) 
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -57,11 +56,10 @@ class APIKey(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     api_key_name = Column(String)
-    api_key_hash = Column(String, default=lambda: str(uuid.uuid4()), unique=True, index=True, nullable=False) 
+    api_key_hash = Column(String, unique=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow) 
     last_used_at = Column(DateTime, default=datetime.utcnow) 
-    is_active = Column(Boolean, default=True) 
-    expires_at = Column(DateTime, nullable=False) 
+    is_active = Column(Boolean, default=True)  
 
     #Foreign Key Establishment
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False) 

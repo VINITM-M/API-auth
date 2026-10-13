@@ -1,16 +1,17 @@
 from sqlalchemy import select
 from Schemas.api_key import USERS, APIKey
 from database import session
-
+import uuid 
 
 class APIKeyRepository:
 
-    async def create(self, payload) -> APIKey:
-        
-        users = USERS(
+    def generating_api_key(self):
+        return str(uuid.uuid4()) 
 
-            user_email=payload.email, 
-            user_password=payload.password_hash 
+    async def create(self, payload) -> APIKey:
+
+        users = USERS(
+            email=payload.email
         )
 
         #creating session for users 
@@ -18,16 +19,26 @@ class APIKeyRepository:
         session.commit()
         session.refresh(users)
 
+        user = (
+            session.query(USERS)
+            .filter(USERS.email == payload.email)
+            .first()
+        )
+        
+        apikey_generation = self.generating_api_key()
+
         apikey = APIKey(
-            user_api_key_name=payload.api_key_name,  
-            user_no_of_days_expire=payload.no_of_days_expire, 
-            user_api_key_password=payload.api_key_password 
+            api_key_name=payload.api_key_name,
+            api_key_hash=apikey_generation,
+            user_id=user.id
         )
 
         #creating session for APIKey 
         session.add(apikey) 
         session.commit() 
         session.refresh(apikey) 
+
+        return apikey_generation
 
 
     # async def retrive(self, payload ):
