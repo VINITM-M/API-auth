@@ -27,10 +27,7 @@ TABLE MAP  ("1 ──< N" means "one has many")
 
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey 
 from sqlalchemy.orm import declarative_base, relationship
-
 from database.db import engine
-
-import uuid
 from datetime import datetime
 
 
@@ -44,7 +41,6 @@ class USERS(Base):
 
     email = Column(String, unique=True, index=True, nullable=False ) 
     created_at = Column(DateTime, default=datetime.utcnow) 
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     #define relationship 
     api_key_id = relationship("APIKey", back_populates="user")
@@ -60,12 +56,14 @@ class APIKey(Base):
     created_at = Column(DateTime, default=datetime.utcnow) 
     last_used_at = Column(DateTime, default=datetime.utcnow) 
     is_active = Column(Boolean, default=True)  
+    password = Column(String)  
 
     #Foreign Key Establishment
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False) 
 
     #define relationship 
-    user = relationship("USERS", back_populates = 'api_key_id')
+    user = relationship("USERS", back_populates = 'api_key_id')  
+
 
 # Create all tables
 Base.metadata.create_all(engine)

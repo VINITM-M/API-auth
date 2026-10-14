@@ -15,3 +15,9 @@ api_router.include_router(
     prefix="/create-api-keys",
     tags=["api-keys"] 
 )
+
+api_router.include_router(
+    api_key.router,
+    prefix="/password",
+    tags=["password"] 
+)

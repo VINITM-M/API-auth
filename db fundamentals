@@ -78,3 +78,12 @@ DATABASE FUNDAMENTALS
                 Alembic
                     ↓
              Production Backend
+
+
+.first()         # first record
+.all()           # all records
+.one()           # exactly one record
+.one_or_none()   # zero or one record
+.get()           # by primary key
+.scalar()        # single value
+.count()         # row count

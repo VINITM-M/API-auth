@@ -1,4 +1,3 @@
-from sqlalchemy import select
 from Schemas.api_key import USERS, APIKey
 from database import session
 import uuid 
@@ -38,12 +37,21 @@ class APIKeyRepository:
         session.commit() 
         session.refresh(apikey) 
 
-        return apikey_generation
+        return {
+            "message" : "key generate successfully", 
+            "id" : apikey.id , 
+            "key_generation": apikey_generation
+        }
 
-
-    # async def retrive(self, payload ):
+    async def inserting_api_password(self, payload):
         
-    #     stmt = select(ApiKeyCreation.key).where(ApiKeyCreation.user_email == payload.email, 
-    #                                             ApiKeyCreation.created_at >= datetime.utcnow() - timedelta(days=no_of_days) ) 
+        user = session.query(USERS).filter(USERS.email == payload.email).first()
+        
+        api_key = session.query(APIKey).filter(APIKey.user_id == user.id, APIKey.id == payload.id).first()
 
-    #     return stmt 
+        api_key.password = payload.password
+
+        session.commit()
+        session.refresh(api_key)
+
+        return {"message": "Password updated successfully"}
