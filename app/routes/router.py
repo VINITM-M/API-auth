@@ -12,12 +12,19 @@ async def health_check():
  
 api_router.include_router(
     api_key.router,
-    prefix="/create-api-keys",
-    tags=["api-keys"] 
+    tags=["Manage Keys"] 
 )
 
-api_router.include_router(
-    api_key.router,
-    prefix="/password",
-    tags=["password"] 
-)
+# Router based on the resources, example User, Restaurient, Post, etc
+
+# api_router.include_router(
+#     <router>,
+#     prefix="/users",
+#     tags=["Manage Users"] 
+# )
+
+# api_router.include_router(
+#     <router>,
+#     prefix="/restaurants",
+#     tags=["Manage Restaurants"] 
+# )

@@ -4,13 +4,12 @@ from repositary.repositary import APIKeyRepository
 
 router = APIRouter() 
 
-@router.post("",tags=["api-keys"])
+@router.post("/create-api-keys",description="Create API keys for users")
 async def create_api_key(payload: APIKeyCreate  #it validate the data and filter the data what actually we need especially 
 ):
-
     return await APIKeyRepository().create(payload)
 
-@router.post("/password", tags = ["password"]) 
+@router.post("/password", description="Create API password for users") 
 async def password(payload : APIPassword):
     
     return await APIKeyRepository().inserting_api_password(payload)   

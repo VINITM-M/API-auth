@@ -1,4 +1,5 @@
 from Schemas.api_key import USERS, APIKey
+from algorithms.encryption_decryption import AESCipher
 from database import session
 import uuid 
 
@@ -9,9 +10,16 @@ class APIKeyRepository:
 
     async def create(self, payload) -> APIKey:
 
+        print("Payload received:", payload)  # Debugging line to check the payload 
+
         users = USERS(
             email=payload.email
         )
+
+        apikey_generation = self.generating_api_key()
+        
+        aes  = AESCipher(apikey_generation)
+        encrypted_data = aes.encrypt_data()
 
         #creating session for users 
         session.add(users)
@@ -22,16 +30,15 @@ class APIKeyRepository:
             session.query(USERS)
             .filter(USERS.email == payload.email)
             .first()
-        )
-        
-        apikey_generation = self.generating_api_key()
+            )
 
         apikey = APIKey(
             api_key_name=payload.api_key_name,
-            api_key_hash=apikey_generation,
+            api_key_hash=encrypted_data,
             user_id=user.id
         )
 
+        
         #creating session for APIKey 
         session.add(apikey) 
         session.commit() 
