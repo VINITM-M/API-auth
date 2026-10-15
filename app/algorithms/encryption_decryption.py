@@ -1,7 +1,7 @@
 # AES algorithm — it’s fast, highly secure, and especially suitable for handling large amounts of data.
 # AES algorithm suitable for symmetric key encryption, which means the same key is used for both encryption and decryption. It is widely used in various applications, including secure communications, data storage, and more. 
 
-from curses import raw
+
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 import base64

@@ -56,14 +56,13 @@ class APIKey(Base):
     created_at = Column(DateTime, default=datetime.utcnow) 
     last_used_at = Column(DateTime, default=datetime.utcnow) 
     is_active = Column(Boolean, default=True)  
-    password = Column(String)  
+    password = Column(String, nullable = False)  
 
     #Foreign Key Establishment
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False) 
 
     #define relationship 
-    user = relationship("USERS", back_populates = 'api_key_id')  
-
+    user = relationship("USERS", back_populates = 'api_key_id')   
 
 # Create all tables
 Base.metadata.create_all(engine)
