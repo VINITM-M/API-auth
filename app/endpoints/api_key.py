@@ -12,4 +12,10 @@ async def create_api_key(payload: APIKeyCreate  #it validate the data and filter
 @router.post("/password", description="Create API password for users") 
 async def password(payload : APIPassword):
     
-    return await APIKeyRepository().inserting_api_password(payload)   
+    return await APIKeyRepository().inserting_api_password(payload)    
+
+@router.post('/retrieve-api-key', description = 'retriving api key') 
+
+async def retrive_api_key(payload):
+
+    return await APIKeyRepository().retrival_api_key_with_password(payload)
