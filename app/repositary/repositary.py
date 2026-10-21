@@ -1,8 +1,10 @@
 from Schemas.api_key import USERS, APIKey
-from algorithms.encryption_decryption import AESCipher
+from algorithms.symmetric_encryption_decryption import AESCipher
 from database import session
 import uuid 
-from fastapi import HTTPException, status, JSONResponse 
+from fastapi import HTTPException, status
+from fastapi.responses import JSONResponse   
+
 class APIKeyRepository:
 
     def generating_api_key(self):
@@ -16,9 +18,12 @@ class APIKeyRepository:
         #api key generation 
         apikey_generation = self.generating_api_key()
 
-        #api_key encryption and decryption 
+        '''AES algorithm for Symmetric key encryption  
+
         aes  = AESCipher(apikey_generation)
-        encrypted_data = aes.encrypt_data()
+        encrypted_data = aes.encrypt_data() ''' 
+
+        aes = 
 
         try: 
             #creating session for users 
@@ -87,13 +92,13 @@ class APIKeyRepository:
         api_key = session.query( APIKey.password, APIKey.api_key_hash ).filter(APIKey.id == payload.id).first()
         password, api_key_hash = api_key
 
-        decrypted_password  = AESCipher().decrypt(password)
+        decrypted_password  = AESCipher(payload.password).decrypt_data(password)
         print("decrypted password: ", decrypted_password)
 
         try: 
-            if payload.passoword == decrypted_password: 
+            if payload.password == decrypted_password: 
 
-                decrypted_hash = AESCipher().decrypt(api_key_hash) 
+                decrypted_hash = AESCipher(payload.password).decrypt_data(api_key_hash) 
                 print("decrypted hash: ", decrypted_hash) 
 
                 return JSONResponse(

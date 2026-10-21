@@ -14,8 +14,7 @@ async def password(payload : APIPassword):
     
     return await APIKeyRepository().inserting_api_password(payload)    
 
-@router.post('/retrieve-api-key', description = 'retriving api key') 
-
-async def retrive_api_key(payload):
+@router.post("/retrieve-api-key", description="Retrieving API key") 
+async def retrieve_api_key(payload : APIPassword):
 
     return await APIKeyRepository().retrival_api_key_with_password(payload)
